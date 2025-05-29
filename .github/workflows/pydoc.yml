@@ -1,38 +1,44 @@
-name: Generar i publicar Pydoc
+name: Generar documentació amb pydoc
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  generate-pydoc:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clonar repositori
-      uses: actions/checkout@v3
+      - name: 📥 Clonar el repositori
+        uses: actions/checkout@v3
 
-    - name: Instal·lar Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: 🐍 Configurar Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
 
-    - name: Instal·lar dependències
-      run: |
-        python -m pip install --upgrade pip
+      - name: 🧪 Instal·lar dependències
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Crear carpeta per la documentació
-      run: mkdir docs
+      - name: ⚙️ Exportar DJANGO_SETTINGS_MODULE
+        run: echo "DJANGO_SETTINGS_MODULE=my_site.settings" >> $GITHUB_ENV
 
-    - name: Generar documentació amb pydoc
-      run: |
-        pydoc -w blog.models
-        pydoc -w blog.views
-        pydoc -w blog.urls
-        mv *.html docs/
+      - name: 📄 Generar documentació amb pydoc
+        run: |
+          source venv/bin/activate
+          mkdir -p pydoc_html
+          pydoc -w blog.models
+          pydoc -w blog.views
+          mv *.html pydoc_html/
 
-    - name: Publicar a GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs
+      - name: 📦 Guardar documentació com a artefacte
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentacio-pydoc
+          path: pydoc_html/
