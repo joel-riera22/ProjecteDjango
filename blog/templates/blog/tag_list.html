@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container my-5">
+    <h1 class="mb-3">Etiquetes</h1>
+    {% if tags %}
+        <div class="row justify-content-center">
+        {% for tag in tags %}
+            <div class="col-md-3 d-flex justify-content-center mb-3">
+                <button class="bg-secondary border-0 rounded-1 px-3 py-2">
+                    <a href="{% url 'tag-post' tag.pk %}" style="text-decoration: none; color: white;">
+                        {{ tag.tag }}
+                    </a>
+                </button>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>No hi ha tags disponibles.</p>
+    {% endif %}
+</section>
+{% endblock %}

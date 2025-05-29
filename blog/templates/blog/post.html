@@ -1,0 +1,13 @@
+<div class="card mb-3" style="width: auto">
+    <a href="{% url 'post-detail' post.slug %}" style="text-decoration:none; color:var(--bs-heading-color)">
+        
+        {% if post.image_name %}
+            <img src="{{ post.image_name.url }}" class="img-fluid" alt="Imatge de {{ post.title }}">
+        {% endif %}
+
+        <div class="p-3">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.excerpt|truncatewords:20 }}</p>
+        </div>
+    </a>
+</div>

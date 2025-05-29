@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container my-5">
+    <h1>Detalls de l'Autor</h1>
+    <p><strong>Nom:</strong> {{ author.first_name }}</p>
+    <p><strong>Cognom:</strong> {{ author.last_name }}</p>
+    <p><strong>Adreça:</strong> {{ author.email }}</p>
+
+    <h2 class="mt-4 mb-3">Posts publicats per {{ author.first_name }} {{ author.last_name }}</h2>
+    {% if posts %}
+      <div class="row justify-content-center">
+        {% for post in posts %}
+          <div class="col-md-3 d-flex justify-content-center mb-3">
+            {% include "blog/post.html" with post=post %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Aquest autor encara no ha publicat cap article.</p>
+    {% endif %}
+  </div>
+{% endblock %}

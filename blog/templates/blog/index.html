@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    My blog
+{% endblock %}
+
+{% block content %}
+<img src="{% static 'blog/images/portada.png' %}" alt="Logo del blog" width="100%">
+<section id="welcome" class="container">
+    <div class="text-center">
+        <h1 class="fw-light" style="font-size:50px;">Benvingut al Blog M3 - UF6</h1>
+        <p class="fw-light" style="font-size:18px;">Aquest és el projecte d'aprenentatge M3-UF6 basat en DJango</p>
+    </div>
+
+    <h1>Darrers Posts</h1>
+    <div class="row justify-content-center">
+        {% for post in latest_posts %}
+            <div class="col-md-4 d-flex justify-content-center mb-3">
+                {% include "blog/post.html" with post=post %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <h1>DJango</h1>
+    <p>
+        Django és un framework popular de desenvolupament web de codi obert que s'utilitza per crear
+        aplicacions web robustes i escalables en Python. Va ser creat l'any 2003 per Adrian Holovaty i
+        Simon Willison mentre treballaven en el lloc web de notícies Lawrence Journal-World.
+    </p>
+    <p>
+        Django segueix el patró de disseny Model-Vista-Controlador (MVC), que separa la lògica de
+        presentació de les dades i la interacció amb l'usuari. El framework també proporciona eines pel
+        treball amb les bases de dades, l'autenticació d'usuaris i la gestió de formularis, entre altres
+        característiques.
+    </p>
+</section>
+{% endblock %}
