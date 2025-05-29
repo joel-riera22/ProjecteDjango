@@ -1,0 +1,38 @@
+name: Generar i publicar Pydoc
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar repositori
+      uses: actions/checkout@v3
+
+    - name: Instal·lar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Instal·lar dependències
+      run: |
+        python -m pip install --upgrade pip
+
+    - name: Crear carpeta per la documentació
+      run: mkdir docs
+
+    - name: Generar documentació amb pydoc
+      run: |
+        pydoc -w blog.models
+        pydoc -w blog.views
+        pydoc -w blog.urls
+        mv *.html docs/
+
+    - name: Publicar a GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
